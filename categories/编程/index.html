@@ -29,8 +29,8 @@
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="/fontawesome/css/all.css">
-<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.9.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Ubuntu:400,600|Source+Code+Pro">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
 
 
@@ -147,6 +147,136 @@
         </nav>
     </div>
 </div>
+
+    <div class="card">
+    
+    <div class="card-image">
+        <a href="/编程/如何在 Windows10 系统下愉快的安装 Homestead/" class="image is-7by1">
+            <img class="thumbnail" src="/images/thumbnails/6.jfif" alt="如何在 Windows10 系统下愉快的安装 Homestead">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-08-07T08:19:00.000Z">2019-08-07</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/编程/">编程</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    16 分钟 读完 (大约 2383 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/编程/如何在 Windows10 系统下愉快的安装 Homestead/">如何在 Windows10 系统下愉快的安装 Homestead</a>
+            
+        </h1>
+        <div class="content">
+            <blockquote>
+<p> 仅以此文祭奠我两天之内踩下的 N 个坑</p>
+</blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>众所周知，Laravel 对开发环境十分苛刻（<del>难伺候</del>），这是高效率开发所需要付出的代价。为了使线上的生产环境和线下的开发环境达到统一，同时也让不同开发者在不同的平台上能在同一环境下开发，Laravel 官方推出了 Homestead 来解决这个问题。然而，身处大陆，我们是很难像歪果仁一样体验 Homestead 带来的快感，更多的是遭受安装时带来的痛苦与折磨。在写这篇文章的前两天里，我踩过了无数个坑，把各大虚拟桌面平台都试了个遍，最终才摸清了这一摊儿浑水。</p>
+<h1 id="安装之前"><a href="#安装之前" class="headerlink" title="安装之前"></a>安装之前</h1><p>Homestead 说白了就是一个封装好了的 Vagrant Box。你可能又要问了，Vagrant 是啥？Laravel 文档是这么解释的：</p>
+<blockquote>
+<p> <a href="https://www.vagrantup.com/" target="_blank" rel="noopener">Vagrant</a> 提供了一种简单、优雅的方式来管理和配置虚拟主机。</p>
+</blockquote>
+<p>是的，Vagrant 就是一个虚拟机管理工具。注意，它仅仅是管理而已，并不能够独立的创建虚拟机。因此，它还需要与虚拟机软件配套使用。在这里，我们用 <a href="https://www.virtualbox.org/" target="_blank" rel="noopener">Oracle VirtualBox</a>。</p>
+<p>你可能会问了，为什么不用 Win10 自带的 Hyper-v ？Homestead 不是也支持吗？</p>
+<p>是的，Homestead 是支持 Hyper-v。但 Hyper-v 在我的电脑上有一个非常糟糕的表现：</p>
+<p>端口无法正常的映射到虚拟机上，即我不能使用 127.0.0.1 这个地址与虚拟机进行通信。一旦我要连接虚拟机上的数据库，我必须要找到虚拟机的内网IP（172开头），才能连接上。然而，每重建一次 Box 这个 IP 就会刷新一次，我实在是没有耐心总去找它的 IP，所以当我发现了这个情况并且找不到解决办法后，就直接把它删了 …</p>
+<p>至于 VMware Desktop，需要 Vagrant 的付费插件才能使用（79刀），在这里也暂时不讨论。</p>
+<p>所以，在安装 Homestead 之前，你需要先安装 VirtualBox 和 Vagrant。</p>
+<p>另外，所有需要下载的软件，我都将在文末附上百度网盘。</p>
+<h1 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h1><h3 id="安装-Homestead-Vagrant-Box"><a href="#安装-Homestead-Vagrant-Box" class="headerlink" title="安装 Homestead Vagrant Box"></a>安装 Homestead Vagrant Box</h3><p>如果你不在大陆，你可以直接使用以下命令飞速安装 Homestead Vagrant Box：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add laravel/homestead</span><br></pre></td></tr></table></figure>
+<p>可是你身处大陆，就注定不会这么顺利。</p>
+<p>Vagrant 的文件都放在 Amazon S3 云存储上，由于 GFW 的原因，S3 的下载速度奇慢，在我的电脑上，它很少超过 80k/s，甚至时不时的降到 0。所以，我们需要从其他不受 GFW 干扰的地方下载，比如文末附上的百度网盘。</p>
+<p>如果你有梯子，可以访问以下链接从官方下载：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://app.vagrantup.com/laravel/boxes/homestead/versions/8.0.1/providers/virtualbox.box</span><br></pre></td></tr></table></figure>
+<p>其中 <code>8.0.1</code> 是版本号，你可以将它替换为<a href="https://app.vagrantup.com/laravel/boxes/homestead" target="_blank" rel="noopener">这个页面</a>的最新版本。</p>
+<p>下载后，在该文件的同一目录下建立 <code>metadata.json</code>，内容如下：</p>
+<figure class="highlight json hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"laravel/homestead"</span>,</span><br><span class="line">    <span class="hljs-attr">"versions"</span>:</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="hljs-attr">"version"</span>: <span class="hljs-string">"8.0.1"</span>,</span><br><span class="line">            <span class="hljs-attr">"providers"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"virtualbox"</span>,</span><br><span class="line">                  <span class="hljs-attr">"url"</span>: <span class="hljs-string">"virtualbox.box"</span></span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样的，你可以将<code>8.0.1</code>替换为最新版本号。</p>
+<h3 id="安装-Homestead"><a href="#安装-Homestead" class="headerlink" title="安装 Homestead"></a>安装 Homestead</h3><p>先克隆官方仓库：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="hljs-built_in">clone</span> https://github.com/laravel/homestead.git ~/Homestead</span><br></pre></td></tr></table></figure>
+<p>但是，该仓库的主分支是不稳定的，我们需要切换到打过标签的稳定版本。</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git tag <span class="hljs-comment">#查看所有的稳定版本的标签</span></span><br><span class="line">git checkout v8.0.1 <span class="hljs-comment">#切换到稳定版本</span></span><br></pre></td></tr></table></figure>
+<p>接下来，你只要初始化 Homestead ，就可以使用它了：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./init.bat</span><br></pre></td></tr></table></figure>
+<h3 id="生成密匙"><a href="#生成密匙" class="headerlink" title="生成密匙"></a>生成密匙</h3><p>打开 <code>Homestead.yml</code> 你会发现有一行这样的：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">authorize:</span> <span class="hljs-string">~/.ssh/id_rsa.pub</span></span><br></pre></td></tr></table></figure>
+<p>这说明登录 Homestead 的虚拟机需要用宿主机的密匙，密匙默认存放在用户目录下的 <code>.ssh</code> 文件夹，如果你当前的用户没有密匙，请使用以下命令来生成：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen.exe</span><br></pre></td></tr></table></figure>
+<p>一路回车</p>
+<h3 id="配置-Homestead-yml"><a href="#配置-Homestead-yml" class="headerlink" title="配置 Homestead.yml"></a>配置 Homestead.yml</h3><p>以下即是一份标准的 Homestead 配置文件：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">---</span></span><br><span class="line"><span class="hljs-attr">ip:</span> <span class="hljs-string">"192.168.10.10"</span></span><br><span class="line"><span class="hljs-attr">memory:</span> <span class="hljs-number">1024</span> <span class="hljs-comment">#虚拟机最大使用内存</span></span><br><span class="line"><span class="hljs-attr">cpus:</span> <span class="hljs-number">1</span> <span class="hljs-comment">#虚拟机最大占用核心</span></span><br><span class="line"><span class="hljs-attr">provider:</span> <span class="hljs-string">virtualbox</span> <span class="hljs-comment">#使用的虚拟机软件</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-attr">authorize:</span> <span class="hljs-string">~/.ssh/id_rsa.pub</span> </span><br><span class="line"></span><br><span class="line"><span class="hljs-attr">keys:</span></span><br><span class="line"><span class="hljs-bullet">    -</span> <span class="hljs-string">~/.ssh/id_rsa</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 挂载文件夹</span></span><br><span class="line"><span class="hljs-attr">folders:</span></span><br><span class="line"><span class="hljs-attr">    - map:</span> <span class="hljs-string">"G:/code"</span> <span class="hljs-comment">#你的电脑上的代码文件夹</span></span><br><span class="line"><span class="hljs-attr">      to:</span> <span class="hljs-string">/home/vagrant/code</span> <span class="hljs-comment">#在虚拟机内的路径</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 站点配置</span></span><br><span class="line"><span class="hljs-attr">sites:</span></span><br><span class="line"><span class="hljs-attr">    - map:</span> <span class="hljs-string">homestead.test</span> <span class="hljs-comment">#域名 需要提前修改Hosts文件，使其指向本机（127.0.0.1）</span></span><br><span class="line"><span class="hljs-attr">      to:</span> <span class="hljs-string">/home/vagrant/code/public</span> <span class="hljs-comment">#Web 根目录</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 初始数据库</span></span><br><span class="line"><span class="hljs-attr">databases:</span></span><br><span class="line"><span class="hljs-bullet">    -</span> <span class="hljs-string">homestead</span></span><br><span class="line"><span class="hljs-bullet">    -</span> <span class="hljs-string">smartboard</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 其他功能</span></span><br><span class="line"><span class="hljs-attr">features:</span></span><br><span class="line"><span class="hljs-attr">    - mariadb:</span> <span class="hljs-literal">false</span></span><br><span class="line"><span class="hljs-attr">    - ohmyzsh:</span> <span class="hljs-literal">true</span></span><br><span class="line"><span class="hljs-attr">    - webdriver:</span> <span class="hljs-literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 端口映射</span></span><br><span class="line"><span class="hljs-comment"># ports:</span></span><br><span class="line"><span class="hljs-comment">#     - send: 80</span></span><br><span class="line"><span class="hljs-comment">#       to: 80</span></span><br><span class="line"><span class="hljs-comment">#     - send: 7777</span></span><br><span class="line"><span class="hljs-comment">#       to: 777</span></span><br><span class="line"><span class="hljs-comment">#       protocol: udp</span></span><br></pre></td></tr></table></figure>
+<p>Homestead 很强大，它所提供的功能远不止这些，你可以查询<a href="https://learnku.com/docs/laravel/5.8/homestead" target="_blank" rel="noopener">文档</a>了解更多。</p>
+<h3 id="启动-Homestead"><a href="#启动-Homestead" class="headerlink" title="启动 Homestead"></a>启动 Homestead</h3><p>在 Homestead 目录下执行：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<h3 id="进入虚拟机"><a href="#进入虚拟机" class="headerlink" title="进入虚拟机"></a>进入虚拟机</h3><p>你可以在 Homestead 目录下执行：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
+<p>或者，你也可以直接通过 SSH 连接虚拟机，这里我以 <code>Fluent Terminal</code> 为例：</p>
+<p><img src="/images/2019/08/07/example1.jpg" alt="Fluent Terminal 的 SSH 连接选项"></p>
+<p>接下来，你就可以开始正常的开发工作了！</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>由于 Homestead 并没有为全球化做很多工作，你可能还需要将软件源更换为大陆的，进入 Homestead 执行：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo sed -i <span class="hljs-string">'s/archive.ubuntu.com/mirrors.aliyun.com/g'</span> /etc/apt/sources.list</span><br><span class="line">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/</span><br><span class="line">npm config <span class="hljs-built_in">set</span> registry https://registry.npm.taobao.org</span><br><span class="line">yarn config <span class="hljs-built_in">set</span> registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<h1 id="我踩过的万丈深坑"><a href="#我踩过的万丈深坑" class="headerlink" title="我踩过的万丈深坑"></a>我踩过的万丈深坑</h1><h3 id="执行-vagrant-up-后虚拟机无法启动"><a href="#执行-vagrant-up-后虚拟机无法启动" class="headerlink" title="执行 vagrant up 后虚拟机无法启动"></a>执行 <code>vagrant up</code> 后虚拟机无法启动</h3><p>显示以下错误信息：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Call to WHvSetupPartition failed: ERROR_SUCCESS (Last=0xc000000d/87) (VERR_NEM_VM_CREATE_FAILED).</span><br></pre></td></tr></table></figure>
+<p>这是因为 Hyper-v 与 VirtualBox 不兼容导致 VirtualBox 无法正常启动虚拟机。</p>
+<p>网上大部分教程都会教你打开 <code>启用或关闭 Windows 功能</code> 并在里面关闭 Hyper-v 功能，或者叫你在命令行里执行以下代码：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /<span class="hljs-built_in">set</span> hypervisorlaunchtype off</span><br></pre></td></tr></table></figure>
+<p>事实上这是<strong>错误的</strong>（在我的电脑上它一点也不起作用）</p>
+<p>VirtualBox 从 6.0 版本开始，在 Windows 上会尝试使用 Hyper-v 作为虚拟引擎，因此你<strong>不需要关闭 Hyper-v</strong></p>
+<p>在启用 Hyper-v 后，我的虚拟主机正常运转</p>
+<h3 id="宿主机的文件夹无法挂载到虚拟主机上去"><a href="#宿主机的文件夹无法挂载到虚拟主机上去" class="headerlink" title="宿主机的文件夹无法挂载到虚拟主机上去"></a>宿主机的文件夹无法挂载到虚拟主机上去</h3><p>不管 <code>Homestead</code> 里的 <code>folders</code> 怎么样配置都无效</p>
+<p>这可能是你的路径内含有中文字符造成的。</p>
+<p><del>当初我正是因为这个原因才从 VirtualBox  跳到 Hyper-v，发现还是挂载不上去</del></p>
+<h3 id="npm-install-报错"><a href="#npm-install-报错" class="headerlink" title="npm install 报错"></a>npm install 报错</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error An unexpected error occurred: &quot;EPROTO: protocol error, symlink &apos;../../../parser/bin/babel-parser.js&apos; -&gt; &apos;/home/vagrant/smartboard/node_modules/@babel/core/node_modules/.bin/parser&apos;&quot;.</span><br></pre></td></tr></table></figure>
+<p><img src="/images/2019/08/07/example1.jpg" alt></p>
+<p>你可以用管理员命令行执行 <code>vagrant up</code> 来解决这个问题</p>
+<p>或者你也可以在命令后面加上 <code>--no-bin-links</code>参数：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --no-bin-links</span><br></pre></td></tr></table></figure>
+<h3 id="修改完-Homestead-yml-文件后不生效"><a href="#修改完-Homestead-yml-文件后不生效" class="headerlink" title="修改完 Homestead.yml 文件后不生效"></a>修改完 <code>Homestead.yml</code> 文件后不生效</h3><p>Homestead 不会自动监控配置文件，需要重载容器才能使其生效。</p>
+<p>在 Homestead 文件夹下执行：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant reload --provision</span><br></pre></td></tr></table></figure>
+<h1 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h1><p>我并不建议 Laravel 的初学者一上来就开始用 Homestead，因为其繁琐的安装很可能会消磨掉你开发的兴趣，就像我自己在开发之前澎湃的心，在经历过两天的折磨后也早已化成了一滩静水。</p>
+<p>初学者，大胆的用 WAMP 或者 Laragon 这种集成环境吧，这不是一种错误的做法，根据自己的情况灵活地处理开发环境是一种聪明的做法！等到真正需要用上宝剑的时候，再把宝剑磨好未必就已经迟了。你热情向上渴望学习的心比什么都重要！</p>
+<p>另外，我个人并不十分推荐使用 Homestead。为了使用它，需要安装两个巨大的依赖软件，还需要踩这么多的坑，未免太过于繁琐。有时候太过灵活了就是臃肿，太过于臃肿了就是愚昧。</p>
+<p>说起我为什么要用 Homestead，不过是一种人云亦云的从众心理，在国内的 Laravel 开发圈内，Laravel 开发一定要用 Homestead 的思想大行其道。只要能好好开发，能达到一样的效果，为什么就非用 Homestead 不可？我们身处大陆，Homestead 对我们并不友好，为什么还要非用它不可？</p>
+<p>值得高兴的是，基于 Docker 的轻量化开发环境 LaraEdit 正在孕育之中，而同样基于 Docker 的 Laradock 已诞生良久。相信在将来的开发环境上，我们会有更多灵活的选择。</p>
+<h1 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h1><p><a href="https://pan.baidu.com/s/1v7YODuf96k4xxiAVJn-7eA" target="_blank" rel="noopener">百度网盘</a> </p>
+<p>提取码：<code>fine</code></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://learnku.com/docs/laravel/5.8/homestead" target="_blank" rel="noopener">Laravel 文档 - Homestead</a></li>
+<li><a href="https://learnku.com/laravel/t/2178/windows-environment-to-build-laravel-development-environment-homestead-including-all-the-resources-link" target="_blank" rel="noopener">Windows 环境下搭建 Laravel 开发环境 Homestead</a></li>
+<li><a href="https://forums.virtualbox.org/viewtopic.php?f=6&amp;t=90853" target="_blank" rel="noopener">VirtualBox 6.0 and Hyper-V</a></li>
+<li><a href="https://github.com/laravel/homestead/issues/611" target="_blank" rel="noopener">Using npm on windows host will cause symlink errors </a></li>
+</ul>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
 
     <div class="card">
     
@@ -343,7 +473,7 @@
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        5
+                        6
                     </p>
                 </div>
             </div>
@@ -363,7 +493,7 @@
                         标签
                     </p>
                     <p class="title has-text-weight-normal">
-                        7
+                        10
                     </p>
                 </div>
             </div>
@@ -472,7 +602,7 @@
                 <span class="level-item">编程</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">2</span>
+                <span class="level-item tag">3</span>
             </span>
         </a></li>
             </ul>
@@ -503,6 +633,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/Homestead/">
+                        <span class="tag">Homestead</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/PHP/">
                         <span class="tag">PHP</span>
                         <span class="tag is-grey">1</span>
@@ -512,6 +649,20 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/RSS/">
                         <span class="tag">RSS</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/laravel/">
+                        <span class="tag">laravel</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/php/">
+                        <span class="tag">php</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>
@@ -551,6 +702,25 @@
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <a href="/编程/如何在 Windows10 系统下愉快的安装 Homestead/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnails/6.jfif" alt="如何在 Windows10 系统下愉快的安装 Homestead">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-07T08:19:00.000Z">2019-08-07</time></div>
+                    <a href="/编程/如何在 Windows10 系统下愉快的安装 Homestead/" class="has-link-black-ter is-size-6">如何在 Windows10 系统下愉快的安装 Homestead</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/编程/">编程</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -628,25 +798,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/编程/AWS踩坑记/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnails/1.jpg" alt="AWS踩坑记">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-10-04T07:29:19.000Z">2018-10-04</time></div>
-                    <a href="/编程/AWS踩坑记/" class="has-link-black-ter is-size-6">AWS踩坑记</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/编程/">编程</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -658,6 +809,17 @@
             归档
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2019/06/">
@@ -739,6 +901,25 @@
         
         <article class="media">
             
+            <a href="/编程/如何在 Windows10 系统下愉快的安装 Homestead/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnails/6.jfif" alt="如何在 Windows10 系统下愉快的安装 Homestead">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-07T08:19:00.000Z">2019-08-07</time></div>
+                    <a href="/编程/如何在 Windows10 系统下愉快的安装 Homestead/" class="has-link-black-ter is-size-6">如何在 Windows10 系统下愉快的安装 Homestead</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/编程/">编程</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/Hexo/给自己的Hexo博客加上RSS订阅/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnails/5.jpg" alt="给自己的Hexo博客加上RSS订阅">
@@ -813,25 +994,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/编程/AWS踩坑记/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnails/1.jpg" alt="AWS踩坑记">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-10-04T07:29:19.000Z">2018-10-04</time></div>
-                    <a href="/编程/AWS踩坑记/" class="has-link-black-ter is-size-6">AWS踩坑记</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/编程/">编程</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -843,6 +1005,17 @@
             归档
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2019/06/">
