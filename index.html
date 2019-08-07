@@ -163,7 +163,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    16 分钟 读完 (大约 2383 个字)
+                    16 分钟 读完 (大约 2378 个字)
                 </span>
                 
                 
@@ -180,7 +180,7 @@
 <p> 仅以此文祭奠我两天之内踩下的 N 个坑</p>
 </blockquote>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>众所周知，Laravel 对开发环境十分苛刻（<del>难伺候</del>），这是高效率开发所需要付出的代价。为了使线上的生产环境和线下的开发环境达到统一，同时也让不同开发者在不同的平台上能在同一环境下开发，Laravel 官方推出了 Homestead 来解决这个问题。然而，身处大陆，我们是很难像歪果仁一样体验 Homestead 带来的快感，更多的是遭受安装时带来的痛苦与折磨。在写这篇文章的前两天里，我踩过了无数个坑，把各大虚拟桌面平台都试了个遍，最终才摸清了这一摊儿浑水。</p>
-<h1 id="安装之前"><a href="#安装之前" class="headerlink" title="安装之前"></a>安装之前</h1><p>Homestead 说白了就是一个封装好了的 Vagrant Box。你可能又要问了，Vagrant 是啥？Laravel 文档是这么解释的：</p>
+<h1 id="安装之前"><a href="#安装之前" class="headerlink" title="安装之前"></a>安装之前</h1><p>Homestead 说白了就是一个封装好了的 Vagrant Box。那么，Vagrant 是啥？Laravel 文档是这么解释的：</p>
 <blockquote>
 <p> <a href="https://www.vagrantup.com/" target="_blank" rel="noopener">Vagrant</a> 提供了一种简单、优雅的方式来管理和配置虚拟主机。</p>
 </blockquote>
@@ -236,7 +236,7 @@
 <p>这可能是你的路径内含有中文字符造成的。</p>
 <p><del>当初我正是因为这个原因才从 VirtualBox  跳到 Hyper-v，发现还是挂载不上去</del></p>
 <h3 id="npm-install-报错"><a href="#npm-install-报错" class="headerlink" title="npm install 报错"></a>npm install 报错</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error An unexpected error occurred: &quot;EPROTO: protocol error, symlink &apos;../../../parser/bin/babel-parser.js&apos; -&gt; &apos;/home/vagrant/smartboard/node_modules/@babel/core/node_modules/.bin/parser&apos;&quot;.</span><br></pre></td></tr></table></figure>
-<p><img src="/images/2019/08/07/example1.jpg" alt></p>
+<p><img src="/images/2019/08/07/example2.jpg" alt></p>
 <p>你可以用管理员命令行执行 <code>vagrant up</code> 来解决这个问题</p>
 <p>或者你也可以在命令后面加上 <code>--no-bin-links</code>参数：</p>
 <figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --no-bin-links</span><br></pre></td></tr></table></figure>
